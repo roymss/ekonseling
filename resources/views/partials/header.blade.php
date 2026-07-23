@@ -2,11 +2,14 @@
     <nav class="flex items-center justify-between py-3.5" role="navigation">
         <div class="flex items-center justify-between w-full md:w-auto">
             <?php 
-                $logo = \Illuminate\Support\Facades\DB::table('logo')->orderBy('id_logo', 'DESC')->skip(0)->take(1)->get();
-                foreach ($logo as $row) {
-                    echo "<a class='block hover:opacity-95 transition-opacity' href='".url('/')."'><img class='h-11 md:h-12 w-auto object-contain' src='".url('/')."/asset/logo/$row->gambar' alt='Logo'/></a>";
-                }
+                $logo = \Illuminate\Support\Facades\DB::table('logo')->orderBy('id_logo', 'DESC')->first();
+                $logoImg = ($logo && !empty($logo->gambar) && file_exists(public_path('asset/logo/' . $logo->gambar)) && !in_array($logo->gambar, ['logoo.png', 'logodivpas.png', 'logodivpas1.png'])) 
+                    ? url('asset/logo/' . $logo->gambar) 
+                    : url('asset/logo/ekonseling-logo.svg');
             ?>
+            <a class='block hover:opacity-95 transition-opacity' href='{{ url('/') }}'>
+                <img class='h-10 md:h-12 w-auto object-contain' src='{{ $logoImg }}' alt='Logo E-Konseling'/>
+            </a>
             <!-- Mobile Menu Button -->
             <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-slate-700 hover:text-emerald-600 focus:outline-none p-2 rounded-lg hover:bg-emerald-50 transition-colors">
                 <i class="fa-solid fa-bars text-xl" x-show="!mobileMenuOpen"></i>

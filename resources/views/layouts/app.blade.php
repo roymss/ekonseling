@@ -3,7 +3,7 @@
 <head>  
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ $title ?? 'E-Konseling' }}</title>
+    <title>{{ isset($title) && $title != 'Laravel' ? $title : 'E-Konseling | Layanan Konseling Online Terpercaya' }}</title>
     <meta name="description" content="{{ $description ?? '' }}">
     <meta name="keywords" content="{{ $keywords ?? '' }}">
     <meta name="author" content="phpmu.com">
@@ -23,7 +23,10 @@
         @endif
     @endif
     
-    <link rel="shortcut icon" href="{{ url('/') }}/asset/images/{{ favicon() ?? 'favicon.ico' }}" />
+    <!-- Favicon / Browser Tab Logo with Cache Buster -->
+    <link rel="icon" type="image/svg+xml" href="{{ url('favicon.svg') }}?v=2" />
+    <link rel="shortcut icon" type="image/svg+xml" href="{{ url('favicon.svg') }}?v=2" />
+    <link rel="apple-touch-icon" href="{{ url('favicon.svg') }}?v=2" />
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{{ url('rss.xml') }}" />
     
     <!-- Google Fonts: Plus Jakarta Sans -->

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#0d9488" />
+    </linearGradient>
+  </defs>
+  <!-- Icon Box -->
+  <rect x="5" y="10" width="60" height="60" rx="18" fill="url(#logoGrad)" />
+  <!-- Chat bubble icon -->
+  <path d="M35 24 C25 24 17 30.5 17 38.5 C17 43 19.5 47 23.5 49.5 C23 53 21 55.5 18 57 C23 57 27.5 55 30 52.5 C31.6 52.8 33.3 53 35 53 C45 53 53 46.5 53 38.5 C53 30.5 45 24 35 24 Z" fill="#ffffff"/>
+  <!-- Heart accent inside bubble -->
+  <path d="M35 44 L32.8 42 C27 36.5 23.5 33.2 23.5 29 C23.5 25.5 26.2 22.8 29.7 22.8 C31.7 22.8 33.6 23.7 34.7 25.2 C35.8 23.7 37.7 22.8 39.7 22.8 C43.2 22.8 45.9 25.5 45.9 29 C45.9 33.2 42.4 36.5 36.6 42.1 L35 44 Z" fill="#059669" transform="scale(0.55) translate(28, 14)"/>
+  
+  <!-- Text Brand -->
+  <text x="80" y="44" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="24" fill="#0f172a" letter-spacing="-0.5">E-KONSELING</text>
+  <text x="80" y="60" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="600" font-size="10" fill="#059669" letter-spacing="1.5">ONLINE CONSULTATION</text>
+</svg>
