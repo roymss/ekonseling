@@ -42,11 +42,28 @@
                 <script type='text/javascript' src='http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4f8aab4674f1896a'></script>
             </div>
         </div>
-    </header>
-  
-	<article class="prose max-w-none prose-green prose-lg text-gray-800 leading-relaxed mb-10">
+    @php
+        $dummyImages = [
+            'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1544027993-37dbfe43562a?q=80&w=1200&auto=format&fit=crop'
+        ];
+        $imgIndex = isset($rows->id_berita) ? ($rows->id_berita % count($dummyImages)) : 0;
+        $foto_berita = (!empty($rows->gambar) && file_exists(public_path('asset/foto_berita/'.$rows->gambar))) 
+            ? url('asset/foto_berita/'.$rows->gambar) 
+            : $dummyImages[$imgIndex];
+    @endphp
+
+    <div class="mb-8 rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 max-h-[420px]">
+        <img src="{{ $foto_berita }}" alt="{{ $rows->judul }}" class="w-full h-full object-cover max-h-[420px]">
+    </div>
+
+	<article class="prose max-w-none prose-emerald prose-lg text-slate-800 leading-relaxed mb-10">
         {!! $rows->isi_berita !!}
-        <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="mt-8 pt-6 border-t border-slate-200">
             <div class='fb-like' data-href="{{ url('berita/detail/'.$rows->judul_seo) }}" data-send='false' data-width='600' data-show-faces='false'></div>
         </div>
 	</article>	
