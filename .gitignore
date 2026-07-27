@@ -25,3 +25,10 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+refactor_partials.php
+refactor_partials2.php
+test*.php
+test_db.php
+
+
+
