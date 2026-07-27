@@ -23,14 +23,14 @@
                 <div class="p-6 sm:p-8">
                     <form action="{{ url('user/konsultasi_edit') }}" enctype="multipart/form-data" method="POST" class="space-y-6">
                         @csrf
-                        <input type="hidden" name="id" value="{{ $rows['id_konsul'] ?? '' }}">
+                        <input type="hidden" name="id" value="{{ $rows->id_konsul ?? '' }}">
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Kategori <span class="text-red-500">*</span></label>
                             <select name="a" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
                                 <option value="">- Pilih Kategori Inovasi -</option>
                                 @foreach ($kategori as $row)
-                                    <option value="{{ $row->id_kategori_konsul ?? $row['id_kategori_konsul'] }}" {{ ($row->id_kategori_konsul ?? $row['id_kategori_konsul']) == ($rows['id_kategori_konsul'] ?? '') ? 'selected' : '' }}>
+                                    <option value="{{ $row->id_kategori_konsul ?? $row['id_kategori_konsul'] }}" {{ ($row->id_kategori_konsul ?? $row['id_kategori_konsul']) == ($rows->id_kategori_konsul ?? '') ? 'selected' : '' }}>
                                         {{ $row->nama_kategori ?? $row['nama_kategori'] }}
                                     </option>
                                 @endforeach
@@ -39,12 +39,12 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Judul <span class="text-red-500">*</span></label>
-                            <input type="text" name="b" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" value="{{ $rows['judul'] ?? '' }}" required>
+                            <input type="text" name="b" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" value="{{ $rows->judul ?? '' }}" required>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi <span class="text-red-500">*</span></label>
-                            <textarea name="h" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm textarea" required>{{ $rows['isi_konsul'] ?? '' }}</textarea>
+                            <textarea name="c" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm textarea" required>{{ $rows->isi_konsul ?? '' }}</textarea>
                         </div>
 
                         <div>

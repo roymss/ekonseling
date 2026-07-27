@@ -101,9 +101,9 @@
     <div x-data="{ uploadModalOpen: false }" @open-upload-modal.window="uploadModalOpen = true">
         <div x-show="uploadModalOpen" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div x-show="uploadModalOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click="uploadModalOpen = false"></div>
+                <div x-show="uploadModalOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/80 transition-opacity" @click="uploadModalOpen = false"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div x-show="uploadModalOpen" x-transition class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-slate-100">
+                <div x-show="uploadModalOpen" x-transition class="relative z-10 inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-slate-100">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
@@ -111,15 +111,15 @@
                                 <div class="mt-4">
                                     <form method="POST" action="{{ url('user/foto') }}" enctype="multipart/form-data" class="space-y-4">
                                         @csrf
-                                        <p class="text-xs text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-200"><i class="fa-solid fa-circle-info text-emerald-500 mr-1"></i> Ukuran disarankan maks 200 KB atau 600 x 600 px</p>
+                                        <p class="text-xs text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-200"><i class="fa-solid fa-circle-info text-emerald-500 mr-1"></i> Ukuran disarankan maks 2 MB atau 600 x 600 px</p>
                                         
                                         <div>
                                             <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Pilih File Foto</label>
-                                            <div class="mt-1 flex rounded-xl shadow-sm border border-slate-200 overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500">
+                                            <div class="mt-1 flex rounded-xl shadow-sm border border-slate-200 overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 bg-white">
                                                 <span class="inline-flex items-center px-3 bg-slate-100 text-slate-500 sm:text-sm border-r border-slate-200">
                                                     <i class="fa fa-image"></i>
                                                 </span>
-                                                <input type="file" name="f" class="flex-1 min-w-0 block w-full px-3 py-2 text-sm text-slate-700 bg-white focus:outline-none">
+                                                <input type="file" name="f" class="flex-1 min-w-0 block w-full text-sm text-slate-700 bg-white focus:outline-none file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-colors">
                                             </div>
                                         </div>
                                         <div class="mt-6 sm:flex sm:flex-row-reverse gap-3">

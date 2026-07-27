@@ -18,7 +18,7 @@ class MainController extends Controller
             ->join('kategori', 'berita.id_kategori', '=', 'kategori.id_kategori')
             ->where('berita.status', 'Y')
             ->orderBy('berita.id_berita', 'DESC')
-            ->limit(4)
+            ->limit(6)
             ->get();
             
         return view('home', compact('title', 'description', 'keywords', 'terkini'));

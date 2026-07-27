@@ -52,23 +52,23 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nama Depan <span class="text-red-500">*</span></label>
-                        <input type="text" name='c' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
+                        <input type="text" name='c' value="{{ old('c') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
                     </div>
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nama Belakang <span class="text-red-500">*</span></label>
-                        <input type="text" name='cc' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
+                        <input type="text" name='cc' value="{{ old('cc') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin <span class="text-red-500">*</span></label>
                         <div class="flex items-center space-x-4 mt-2">
                             <label class="inline-flex items-center">
-                                <input type="radio" name='kelamin' value='Laki-laki' class="form-radio text-green-600 focus:ring-green-500" checked>
+                                <input type="radio" name='kelamin' value='Laki-laki' class="form-radio text-green-600 focus:ring-green-500" {{ old('kelamin', 'Laki-laki') == 'Laki-laki' ? 'checked' : '' }}>
                                 <span class="ml-2 text-sm text-gray-700">Laki-laki</span>
                             </label>
                             <label class="inline-flex items-center">
-                                <input type="radio" name='kelamin' value='Perempuan' class="form-radio text-green-600 focus:ring-green-500">
+                                <input type="radio" name='kelamin' value='Perempuan' class="form-radio text-green-600 focus:ring-green-500" {{ old('kelamin') == 'Perempuan' ? 'checked' : '' }}>
                                 <span class="ml-2 text-sm text-gray-700">Perempuan</span>
                             </label>
                         </div>
@@ -76,26 +76,26 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan <span class="text-red-500">*</span></label>
-                        <input type="text" name='perangkat_daerah' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
+                        <input type="text" name='perangkat_daerah' value="{{ old('perangkat_daerah') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir <span class="text-red-500">*</span></label>
-                        <input type="text" name='tempat_lahir' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
+                        <input type="text" name='tempat_lahir' value="{{ old('tempat_lahir') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir <span class="text-red-500">*</span></label>
-                        <input type="date" name='tanggal_lahir' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm datepicker" required>
+                        <input type="date" name='tanggal_lahir' value="{{ old('tanggal_lahir') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm datepicker" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Status Pernikahan <span class="text-red-500">*</span></label>
                         <select name='status' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
                             <option value=''>- Pilih Status -</option>
-                            <option value='Kawin'>Kawin</option>
-                            <option value='Belum Kawin'>Belum Kawin</option>
-                            <option value='Duda / Janda'>Duda / Janda</option>
+                            <option value='Kawin' {{ old('status') == 'Kawin' ? 'selected' : '' }}>Kawin</option>
+                            <option value='Belum Kawin' {{ old('status') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
+                            <option value='Duda / Janda' {{ old('status') == 'Duda / Janda' ? 'selected' : '' }}>Duda / Janda</option>
                         </select>
                     </div>
 
@@ -103,19 +103,19 @@
                         <label class="block text-sm font-medium text-gray-700 mb-1">Agama <span class="text-red-500">*</span></label>
                         <select name='agama' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>
                             <option value=''>- Pilih Agama -</option>
-                            <option value='Islam'>Islam</option>
-                            <option value='Kristen'>Kristen</option>
-                            <option value='Katolik'>Katolik</option>
-                            <option value='Hindu'>Hindu</option>
-                            <option value='Buddha'>Buddha</option>
-                            <option value='Khonghucu'>Khonghucu</option>
-                            <option value='Lainnya'>Lainnya</option>
+                            <option value='Islam' {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            <option value='Kristen' {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                            <option value='Katolik' {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                            <option value='Hindu' {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                            <option value='Buddha' {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                            <option value='Khonghucu' {{ old('agama') == 'Khonghucu' ? 'selected' : '' }}>Khonghucu</option>
+                            <option value='Lainnya' {{ old('agama') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                         </select>
                     </div>
 
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
-                        <textarea name='alamat' rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required></textarea>
+                        <textarea name='alamat' rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" required>{{ old('alamat') }}</textarea>
                     </div>
                     
                     <!-- Kontak -->
@@ -125,17 +125,17 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">No Telpon / HP <span class="text-red-500">*</span></label>
-                        <input type="text" name='e' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" maxlength="15" onkeyup="nospaces(this)" required>
+                        <input type="text" name='e' value="{{ old('e') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" maxlength="15" onkeyup="nospaces(this)" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Email <span class="text-red-500">*</span></label>
-                        <input type="email" name='d' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" onkeyup="nospaces(this)" required>
+                        <input type="email" name='d' value="{{ old('d') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" onkeyup="nospaces(this)" required>
                     </div>
 
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Username <span class="text-red-500">*</span></label>
-                        <input type="text" name='a' class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" maxlength="50" onkeyup="nospaces(this)" required>
+                        <input type="text" name='a' value="{{ old('a') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm" maxlength="50" onkeyup="nospaces(this)" required>
                     </div>
 
                     <div>

@@ -60,15 +60,27 @@
         </div>
 
         <ul class="flex items-center space-x-3 text-xs">
-            @if (session('level') == 'inovator')
+            @if (session()->has('level') && in_array(session('level'), ['inovator', 'user', 'admin', 'psikolog']))
+                @php
+                    if (session('level') == 'admin') {
+                        $dashUrl = url('/admin/home');
+                        $logoutUrl = url('/admin/logout');
+                    } elseif (session('level') == 'psikolog') {
+                        $dashUrl = url('/psikolog/chat');
+                        $logoutUrl = url('/user/logout');
+                    } else {
+                        $dashUrl = url('/user/profile');
+                        $logoutUrl = url('/user/logout');
+                    }
+                @endphp
                 <li>
-                    <a class='inline-flex items-center space-x-1.5 bg-emerald-700/80 hover:bg-emerald-600 text-white font-medium px-3.5 py-1 rounded-full border border-emerald-500/30 transition-all shadow-sm' href='{{ url('/user/profile') }}'>
+                    <a class='inline-flex items-center space-x-1.5 bg-emerald-700/80 hover:bg-emerald-600 text-white font-medium px-3.5 py-1 rounded-full border border-emerald-500/30 transition-all shadow-sm' href='{{ $dashUrl }}'>
                         <i class="fa-solid fa-user-gear text-emerald-300 text-xs"></i>
                         <span>DASHBOARD</span>
                     </a>
                 </li>
                 <li>
-                    <a class='inline-flex items-center space-x-1 bg-red-600/80 hover:bg-red-500 text-white font-medium px-3.5 py-1 rounded-full border border-red-400/30 transition-all shadow-sm' href='{{ url('/user/logout') }}'>
+                    <a class='inline-flex items-center space-x-1 bg-red-600/80 hover:bg-red-500 text-white font-medium px-3.5 py-1 rounded-full border border-red-400/30 transition-all shadow-sm' href='{{ $logoutUrl }}'>
                         <i class="fa-solid fa-right-from-bracket text-xs"></i>
                         <span>LOGOUT</span>
                     </a>

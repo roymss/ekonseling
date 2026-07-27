@@ -23,9 +23,18 @@
                 <span class="flex items-center"><i class="fa-regular fa-calendar text-green-500 mr-2"></i> {{ $rows->hari.', '.tgl_indo($rows->tanggal)." | ".$rows->jam." WIB" }}</span>
                 <span class="flex items-center"><i class="fa-solid fa-user-pen text-green-500 mr-2"></i> Oleh {{ $rows->nama_lengkap }}</span>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
+                @if (\Illuminate\Support\Facades\Auth::check())
+                <button onclick="startVideoCall(false)" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded shadow-sm text-xs font-bold transition-colors">
+                    <i class="fa-solid fa-video mr-1"></i> Mulai Video Call
+                </button>
+                <button onclick="startVideoCall(true)" class="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded shadow-sm text-xs font-bold transition-colors">
+                    <i class="fa-solid fa-phone mr-1"></i> Mulai Voice Call
+                </button>
+                @endif
+                
                 <!-- AddThis Button BEGIN -->
-                <div class='addthis_toolbox addthis_default_style'>
+                <div class='addthis_toolbox addthis_default_style ml-4'>
                     <a class='addthis_button_preferred_1'></a>
                     <a class='addthis_button_preferred_2'></a>
                     <a class='addthis_button_preferred_3'></a>
@@ -44,6 +53,15 @@
             <div class='fb-like' data-href="{{ url('konsultasi/detail/'.$rows->judul_seo) }}" data-send='false' data-width='600' data-show-faces='false'></div>
         </div>
 	</article>	
+
+    <!-- Jitsi Video Call Section -->
+    <div class="bg-indigo-50 rounded-xl p-6 md:p-8 mb-8 border border-indigo-100 hidden" id="videoCallContainer">
+        <h3 class="text-xl font-bold text-indigo-900 mb-4 flex items-center justify-between">
+            <span><i class="fa-solid fa-video text-indigo-600 mr-3"></i> Sesi Call Langsung</span>
+            <button onclick="document.getElementById('videoCallContainer').classList.add('hidden')" class="text-sm bg-red-100 text-red-600 hover:bg-red-200 px-3 py-1 rounded">Tutup Sesi</button>
+        </h3>
+        <div id="meet" class="w-full rounded-lg overflow-hidden border border-indigo-200 bg-gray-900" style="height: 500px;"></div>
+    </div>
 
     <!-- Comments Section -->
     <div class="bg-gray-50 rounded-xl p-6 md:p-8">
@@ -91,7 +109,7 @@
             </div>
         @endif
 
-        @if (session('level') != '')
+        @if (\Illuminate\Support\Facades\Auth::check())
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Tinggalkan Komentar</h4>
                 <form method="POST" action="{{ url('konsultasi/kirim_komentar') }}" class="space-y-4">
@@ -131,4 +149,34 @@
         @endif
     </div>
 </div>
+
+<script src='https://meet.jit.si/external_api.js'></script>
+<script>
+    let api = null;
+    function startVideoCall(audioOnly = false) {
+        document.getElementById('videoCallContainer').classList.remove('hidden');
+        if (api) {
+            api.dispose();
+        }
+        const domain = 'meet.jit.si';
+        const options = {
+            roomName: 'eKonseling-{{ $rows->judul_seo }}-{{ $rows->id_konsul }}',
+            width: '100%',
+            height: 500,
+            parentNode: document.querySelector('#meet'),
+            userInfo: {
+                displayName: '{{ session("level") != "" ? (Auth::check() ? Auth::user()->nama_lengkap : session("username")) : "Tamu" }}'
+            },
+            configOverwrite: { 
+                startWithAudioMuted: false,
+                startWithVideoMuted: audioOnly
+            },
+            interfaceConfigOverwrite: {
+                filmStripOnly: false
+            }
+        };
+        api = new JitsiMeetExternalAPI(domain, options);
+    }
+</script>
+
 @endsection

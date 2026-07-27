@@ -14,7 +14,7 @@ class PsikologController extends Controller
         $keywords = keywords();
         
         $psikolog = DB::table('users')
-            ->where('level', 'user') // in CI codebase, level='user' means Psikolog
+            ->where('level', 'psikolog') 
             ->orderBy('id_session', 'DESC')
             ->paginate(10);
             

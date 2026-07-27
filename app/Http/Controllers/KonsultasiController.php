@@ -20,7 +20,11 @@ class KonsultasiController extends Controller
             return redirect('/');
         }
 
-        if (session('username') == $row->username || session('level') == 'admin' || session('level') == 'user') {
+        $currentUser = \Illuminate\Support\Facades\Auth::user();
+        $username = $currentUser ? $currentUser->username : session('username');
+        $level = $currentUser ? $currentUser->level : session('level');
+
+        if ($username == $row->username || in_array($level, ['admin', 'user', 'inovator'])) {
             $title = $row->judul;
             $description = strip_tags(substr($row->isi_konsul, 0, 500));
             $keywords = $row->judul;
@@ -30,7 +34,7 @@ class KonsultasiController extends Controller
 
             return view('konsultasi.detail', compact('title', 'description', 'keywords', 'rows', 'image'));
         } else {
-            return redirect('user/konsultasi');
+            return redirect('user/konsultasi')->with('message', '<div class="alert alert-danger">Anda tidak memiliki akses ke konsultasi tersebut.</div>');
         }
     }
 

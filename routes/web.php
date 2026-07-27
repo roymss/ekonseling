@@ -30,7 +30,9 @@ Route::get('/hubungi', [HubungiController::class, 'index'])->name('hubungi.index
 Route::post('/hubungi/kirim', [HubungiController::class, 'kirim'])->name('hubungi.kirim');
 
 // Konsultasi Frontend
-Route::get('/konsultasi', [KonsultasiController::class, 'detail'])->name('konsultasi.index'); // as per CI, no index, only detail
+Route::get('/konsultasi', function() {
+    return redirect('user/konsultasi');
+})->name('konsultasi.index');
 Route::get('/konsultasi/detail/{slug}', [KonsultasiController::class, 'detail'])->name('konsultasi.detail');
 Route::post('/konsultasi/kirim_komentar', [KonsultasiController::class, 'kirim_komentar'])->name('konsultasi.kirim_komentar');
 
@@ -58,13 +60,23 @@ Route::prefix('user')->group(function () {
         Route::match(['get', 'post'], '/edit_profile', [UserController::class, 'edit_profile'])->name('user.edit_profile');
         Route::match(['get', 'post'], '/foto', [UserController::class, 'foto'])->name('user.foto');
         
-        Route::get('/konsultasi', [UserController::class, 'konsultasi'])->name('user.konsultasi');
-        Route::match(['get', 'post'], '/konsultasi_tambah', [UserController::class, 'konsultasi_tambah'])->name('user.konsultasi_tambah');
-        Route::match(['get', 'post'], '/konsultasi_edit/{id}', [UserController::class, 'konsultasi_edit'])->name('user.konsultasi_edit');
+        Route::get('/konsultasi', [\App\Http\Controllers\ChatController::class, 'index'])->name('user.konsultasi');
+        Route::get('/chat/messages', [\App\Http\Controllers\ChatController::class, 'fetchMessages'])->name('user.chat.messages');
+        Route::post('/chat/send', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('user.chat.send');
+        Route::post('/chat/create', [\App\Http\Controllers\ChatController::class, 'createRoom'])->name('user.chat.create');
         Route::get('/konsultasi_delete/{id}', [UserController::class, 'konsultasi_delete'])->name('user.konsultasi_delete');
         
         Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
     });
+});
+
+// ========================
+// Psikolog Routes
+// ========================
+Route::prefix('psikolog')->middleware(['cek_session_psikolog'])->group(function () {
+    Route::get('/chat', [\App\Http\Controllers\PsikologChatController::class, 'index'])->name('psikolog.chat');
+    Route::get('/chat/messages', [\App\Http\Controllers\PsikologChatController::class, 'fetchMessages'])->name('psikolog.chat.messages');
+    Route::post('/chat/send', [\App\Http\Controllers\PsikologChatController::class, 'sendMessage'])->name('psikolog.chat.send');
 });
 
 // ========================
@@ -132,6 +144,11 @@ Route::prefix('admin')->group(function () {
         Route::match(['get', 'post'], '/edit_manajemenuser/{id}', [AdministratorController::class, 'edit_manajemenuser'])->name('admin.edit_manajemenuser');
         Route::get('/delete_manajemenuser/{id}', [AdministratorController::class, 'delete_manajemenuser'])->name('admin.delete_manajemenuser');
         
+        // Manajemen Psikolog
+        Route::get('/manajemen_psikolog', [AdministratorController::class, 'manajemen_psikolog'])->name('admin.manajemen_psikolog');
+        Route::match(['get', 'post'], '/tambah_psikolog', [AdministratorController::class, 'tambah_psikolog'])->name('admin.tambah_psikolog');
+        Route::get('/delete_psikolog/{username}', [AdministratorController::class, 'delete_psikolog'])->name('admin.delete_psikolog');
+
         // Modul Konsultasi (Admin)
         Route::get('/konsul', [AdministratorController::class, 'konsul'])->name('admin.konsul');
         Route::get('/delete_konsul/{id}', [AdministratorController::class, 'delete_konsul'])->name('admin.delete_konsul');
