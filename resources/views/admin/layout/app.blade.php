@@ -58,9 +58,9 @@
                         <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
                     </button>
                     <div x-show="open" x-collapse class="pl-11 pr-2 py-1 space-y-1">
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Daftar Berita</a>
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Kategori</a>
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Komentar</a>
+                        <a href="{{ url('admin/listberita') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Daftar Berita</a>
+                        <a href="{{ url('admin/kategoriberita') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Kategori</a>
+                        <a href="{{ url('admin/komentarberita') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Komentar</a>
                     </div>
                 </div>
 
@@ -74,9 +74,9 @@
                         <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
                     </button>
                     <div x-show="open" x-collapse class="pl-11 pr-2 py-1 space-y-1">
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Data Konsultasi</a>
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Kategori Konsul</a>
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Komentar</a>
+                        <a href="{{ url('admin/konsul') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Data Konsultasi</a>
+                        <a href="{{ url('admin/kategori_konsul') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Kategori Konsul</a>
+                        <a href="{{ url('admin/komentar_konsul') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Komentar</a>
                     </div>
                 </div>
 
@@ -90,15 +90,20 @@
                         <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
                     </button>
                     <div x-show="open" x-collapse class="pl-11 pr-2 py-1 space-y-1">
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Identitas</a>
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Menu Utama</a>
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Halaman Baru</a>
+                        <a href="{{ url('admin/identitaswebsite') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Identitas</a>
+                        <a href="{{ url('admin/menuwebsite') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Menu Utama</a>
+                        <a href="{{ url('admin/halamanbaru') }}" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md">Halaman Baru</a>
                     </div>
                 </div>
                 
-                <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors group">
+                <a href="{{ url('admin/manajemenuser') }}" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors group">
                     <i class="fa-solid fa-users w-5 text-gray-400 group-hover:text-blue-500"></i>
                     <span class="ml-3">Manajemen User</span>
+                </a>
+
+                <a href="{{ url('admin/manajemen_psikolog') }}" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors group">
+                    <i class="fa-solid fa-user-md w-5 text-gray-400 group-hover:text-green-500"></i>
+                    <span class="ml-3">Manajemen Psikolog</span>
                 </a>
 
             </nav>

@@ -41,7 +41,7 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi <span class="text-red-500">*</span></label>
-                            <textarea name="h" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm textarea" required></textarea>
+                            <textarea name="c" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm textarea" required></textarea>
                         </div>
 
                         <div>

@@ -23,6 +23,10 @@
                 $nama_belakang = isset($nama[1]) ? implode(' ', array_slice($nama, 1)) : '';
             @endphp 
 
+            @if(session('message'))
+                {!! session('message') !!}
+            @endif
+
             @if (($row['blokir'] ?? '') == 'Y')
                 <div class="bg-red-50 text-red-800 border-l-4 border-red-500 p-4 rounded-md mb-6 shadow-sm">
                     <strong><i class="fa-solid fa-triangle-exclamation mr-2"></i> PENTING!</strong> Akun anda belum aktif!, silahkan menunggu paling lambat 1x24 jam untuk di verifikasi oleh admin.

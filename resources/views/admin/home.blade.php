@@ -8,7 +8,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between hover:shadow-md transition-shadow">
         <div>
             <p class="text-sm font-medium text-gray-500 mb-1">Total Konsultasi</p>
-            <h3 class="text-3xl font-bold text-gray-800">120</h3>
+            <h3 class="text-3xl font-bold text-gray-800">{{ $total_konsultasi }}</h3>
         </div>
         <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
             <i class="fa-solid fa-stethoscope text-xl"></i>
@@ -19,7 +19,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between hover:shadow-md transition-shadow">
         <div>
             <p class="text-sm font-medium text-gray-500 mb-1">Pesan Masuk</p>
-            <h3 class="text-3xl font-bold text-gray-800">15</h3>
+            <h3 class="text-3xl font-bold text-gray-800">{{ $pesan_masuk }}</h3>
         </div>
         <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
             <i class="fa-solid fa-envelope text-xl"></i>
@@ -30,7 +30,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between hover:shadow-md transition-shadow">
         <div>
             <p class="text-sm font-medium text-gray-500 mb-1">Total Berita</p>
-            <h3 class="text-3xl font-bold text-gray-800">45</h3>
+            <h3 class="text-3xl font-bold text-gray-800">{{ $total_berita }}</h3>
         </div>
         <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
             <i class="fa-solid fa-newspaper text-xl"></i>
@@ -41,7 +41,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between hover:shadow-md transition-shadow">
         <div>
             <p class="text-sm font-medium text-gray-500 mb-1">Total Pengguna</p>
-            <h3 class="text-3xl font-bold text-gray-800">89</h3>
+            <h3 class="text-3xl font-bold text-gray-800">{{ $total_pengguna }}</h3>
         </div>
         <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
             <i class="fa-solid fa-users text-xl"></i>
@@ -56,7 +56,7 @@
         Anda masuk sebagai <strong class="uppercase">{{ session('level') }}</strong>. Gunakan menu di sebelah kiri untuk mengelola konten, melayani konsultasi pengguna, dan mengatur konfigurasi aplikasi E-Konseling.
     </p>
     <div class="mt-6">
-        <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-blue-700 bg-white hover:bg-gray-50 shadow-sm transition-colors">
+        <a href="{{ url('admin/konsul') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-blue-700 bg-white hover:bg-gray-50 shadow-sm transition-colors">
             Lihat Daftar Konsultasi Terbaru
         </a>
     </div>

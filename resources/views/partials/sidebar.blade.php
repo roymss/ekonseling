@@ -8,15 +8,21 @@ $usr = \Illuminate\Support\Facades\DB::table('users')->where('username', session
         $tentang = strip_tags($usr->alamat_lengkap ?? '');
     @endphp
 
+    @if(session('message'))
+        <div class="mb-4">
+            {!! session('message') !!}
+        </div>
+    @endif
+
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden mb-6">
         <div class="bg-gradient-to-r from-emerald-700 to-teal-700 text-white text-center py-3 font-bold text-xs uppercase tracking-wider">
-            Profil Inovator
+            Profil {{ ucfirst($usr->level ?? 'Inovator') }}
         </div>
         <div class="p-5">
             <div class="flex items-start space-x-4 mb-4 pb-4 border-b border-slate-100">
                 <div class="flex-shrink-0 flex flex-col items-center">
                     <img src="{{ url('asset/foto_user/' . $foto_user) }}" alt="{{ $usr->nama_lengkap ?? '' }}" class="w-16 h-16 rounded-full object-cover border-2 border-emerald-500/30 shadow-md">
-                    <span class="text-[10px] text-emerald-700 font-bold uppercase mt-2 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">(Inovator)</span>
+                    <span class="text-[10px] text-emerald-700 font-bold uppercase mt-2 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">({{ ucfirst($usr->level ?? 'Inovator') }})</span>
                 </div>
                 <div class="flex-1 min-w-0">
                     <h4 class="text-sm font-bold text-slate-900 truncate">{{ $usr->nama_lengkap ?? '' }}</h4>

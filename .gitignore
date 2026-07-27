@@ -25,3 +25,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# File uji coba dan refactor sementara
+refactor_partials.php
+refactor_partials2.php
+test*.php
