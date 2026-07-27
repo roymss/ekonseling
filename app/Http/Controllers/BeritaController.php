@@ -43,7 +43,7 @@ class BeritaController extends Controller
 
         DB::table('berita')->where('id_berita', $row->id_berita)->increment('dibaca');
 
-        // Captcha implementation is omitted for initial migration
+        // Captcha implementation is omitted for initial migration ->
         $image = '<!-- Captcha Laravel (coming soon) -->';
         
         return view('berita.detail', compact('title', 'description', 'keywords', 'rows', 'image'));
