@@ -73,7 +73,6 @@ class AdministratorController extends Controller
         if ($request->isMethod('post')) {
             $username = $request->input('username');
             
-            // Cek apakah username sudah ada
             $cek = \Illuminate\Support\Facades\DB::table('users')->where('username', $username)->first();
             if ($cek) {
                 return redirect()->back()->withInput()->with('message', '<div class="alert alert-danger">Username sudah digunakan!</div>');
