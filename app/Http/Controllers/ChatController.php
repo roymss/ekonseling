@@ -48,6 +48,13 @@ class ChatController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Room not found']);
         }
 
+        // Tandai pesan sebagai dibaca
+        DB::table('komentar_konsul')
+            ->where('id_konsul', $id_konsul)
+            ->where('url', '!=', $user->username)
+            ->where('dibaca', 'N')
+            ->update(['dibaca' => 'Y']);
+
         // Pesan pembuka (Dari form tambah konsul awal)
         $messages = [];
         $messages[] = [
@@ -137,5 +144,26 @@ class ChatController extends Controller
         ]);
 
         return response()->json(['status' => 'success', 'id_konsul' => $id]);
+    }
+
+    // AJAX Endpoint: Cek pesan belum terbaca untuk semua room
+    public function checkUnread(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) return response()->json(['status' => 'error']);
+
+        $unreads = [];
+        $rooms = DB::table('konsul')->where('username', $user->username)->get();
+        
+        foreach ($rooms as $room) {
+            $count = DB::table('komentar_konsul')
+                ->where('id_konsul', $room->id_konsul)
+                ->where('url', '!=', $user->username)
+                ->where('dibaca', 'N')
+                ->count();
+            $unreads[$room->id_konsul] = $count;
+        }
+
+        return response()->json(['status' => 'success', 'unreads' => $unreads]);
     }
 }

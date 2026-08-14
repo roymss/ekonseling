@@ -146,7 +146,8 @@ class UserController extends Controller
             $row = User::where('username', session('username'))->first();
             if ($row) Auth::login($row);
         }
-        return view('user.profile', compact('title', 'row'));
+        $image = captcha_img();
+        return view('user.profile', compact('title', 'row', 'image'));
     }
 
     public function edit_profile(Request $request)

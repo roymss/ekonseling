@@ -62,6 +62,7 @@ Route::prefix('user')->group(function () {
         
         Route::get('/konsultasi', [\App\Http\Controllers\ChatController::class, 'index'])->name('user.konsultasi');
         Route::get('/chat/messages', [\App\Http\Controllers\ChatController::class, 'fetchMessages'])->name('user.chat.messages');
+        Route::get('/chat/unread', [\App\Http\Controllers\ChatController::class, 'checkUnread'])->name('user.chat.unread');
         Route::post('/chat/send', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('user.chat.send');
         Route::post('/chat/create', [\App\Http\Controllers\ChatController::class, 'createRoom'])->name('user.chat.create');
         Route::get('/konsultasi_delete/{id}', [UserController::class, 'konsultasi_delete'])->name('user.konsultasi_delete');

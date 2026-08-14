@@ -1,24 +1,28 @@
-<div class="container mx-auto px-4" x-data="{ mobileMenuOpen: false }">                          
-    <nav class="flex items-center justify-between py-3.5" role="navigation">
-        <div class="flex items-center justify-between w-full md:w-auto">
+<div class="w-full bg-[#F9F9FF] border-b border-[#C4C6CF] h-[81px] flex items-center" x-data="{ mobileMenuOpen: false }">                          
+    <nav class="container mx-auto px-4 md:px-20 h-full flex items-center justify-between" role="navigation">
+        <!-- Brand -->
+        <div class="flex items-center gap-3">
             <?php 
                 $logo = \Illuminate\Support\Facades\DB::table('logo')->orderBy('id_logo', 'DESC')->first();
                 $logoImg = ($logo && !empty($logo->gambar) && file_exists(public_path('asset/logo/' . $logo->gambar)) && !in_array($logo->gambar, ['logoo.png', 'logodivpas.png', 'logodivpas1.png'])) 
                     ? url('asset/logo/' . $logo->gambar) 
-                    : url('asset/logo/ekonseling-logo.svg');
+                    : url('asset/logo/ekonseling-logo.svg'); // Kita akan gunakan ini sebagai fallback
             ?>
-            <a class='block hover:opacity-95 transition-opacity' href='{{ url('/') }}'>
-                <img class='h-10 md:h-12 w-auto object-contain' src='{{ $logoImg }}' alt='Logo E-Konseling'/>
+            <a class='flex items-center gap-3 hover:opacity-95 transition-opacity' href='{{ url('/') }}'>
+                <img class='w-10 h-10 object-cover rounded-xl' src='{{ $logoImg }}' alt='Logo E-Konseling'/>
+                <span class="text-[#002045] font-['Inter'] font-bold text-[30px] hidden md:block">E-Konseling Pemerintah</span>
             </a>
+            
             <!-- Mobile Menu Button -->
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-slate-700 hover:text-emerald-600 focus:outline-none p-2 rounded-lg hover:bg-emerald-50 transition-colors">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-slate-700 hover:text-[#002045] focus:outline-none p-2 rounded-lg transition-colors ml-auto">
                 <i class="fa-solid fa-bars text-xl" x-show="!mobileMenuOpen"></i>
                 <i class="fa-solid fa-xmark text-xl" x-show="mobileMenuOpen" style="display:none;"></i>
             </button>
         </div>
         
         <!-- Desktop Menu / Mobile Dropdown -->
-        <div :class="{'block': mobileMenuOpen, 'hidden': !mobileMenuOpen}" class="absolute md:relative top-full left-0 w-full md:w-auto bg-white/95 md:bg-transparent shadow-xl md:shadow-none border-b md:border-none border-slate-100 md:flex items-center space-y-4 md:space-y-0 md:space-x-6 z-50 p-4 md:p-0 transition-all duration-300">
+        @if(!Auth::check() && !session()->has('username'))
+        <div :class="{'block': mobileMenuOpen, 'hidden': !mobileMenuOpen}" class="absolute top-[81px] left-0 w-full md:static md:w-auto bg-[#F9F9FF] md:bg-transparent shadow-xl md:shadow-none border-b md:border-none border-[#C4C6CF] md:flex items-center z-50 p-4 md:p-0 transition-all duration-300">
             <?php 
                 if (!function_exists('main_menu')) {
                     function main_menu() {
@@ -42,14 +46,15 @@
                         $html = "";
                         if (isset($menu->parents[$parent])) {
                             if ($parent=='0'){
-                                $html .= "<ul class='flex flex-col md:flex-row md:items-center md:space-x-7 px-2 md:px-0 py-2 md:py-0 font-medium text-slate-700 text-sm'>";
+                                $html .= "<ul class='flex flex-col md:flex-row md:items-center md:gap-6 px-2 md:px-0 py-2 md:py-0'>";
                             }else{
-                                $html .= "<ul class='md:absolute left-0 hidden md:group-hover:block bg-white/95 backdrop-blur-md text-slate-800 md:shadow-2xl py-3 md:mt-3 md:rounded-2xl min-w-[220px] z-50 md:border md:border-emerald-100 ml-4 md:ml-0 transition-all duration-300 opacity-0 md:group-hover:opacity-100 transform translate-y-2 md:group-hover:translate-y-0'>";
+                                $html .= "<ul class='md:absolute left-0 hidden md:group-hover:block bg-white text-slate-800 md:shadow-2xl py-3 md:mt-3 md:rounded-lg min-w-[220px] z-50 md:border md:border-slate-200 ml-4 md:ml-0 transition-all duration-300 opacity-0 md:group-hover:opacity-100'>";
                             }
                             foreach ($menu->parents[$parent] as $itemId) {
                                 if (!isset($menu->parents[$itemId])) {
-                                    $linkClass = $parent == '0' ? "block py-2.5 md:py-1 font-semibold text-slate-700 hover:text-emerald-600 transition-all duration-200 uppercase tracking-wide text-xs md:text-sm relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:-bottom-1 after:left-0 after:bg-emerald-600 after:origin-bottom-right after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-hover:after:origin-bottom-left" : "block px-4 py-2 text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 hover:pl-6 transition-all duration-200 text-xs font-medium";
+                                    $linkClass = $parent == '0' ? "block py-2 md:py-1 font-medium text-[14px] text-[#43474E] hover:text-[#002045] font-['Inter'] transition-colors" : "block px-4 py-2 text-[#43474E] hover:bg-[#F9F9FF] hover:text-[#002045] transition-colors text-[14px] font-medium font-['Inter']";
                                     
+                                    // Set style for active or special items if needed, for now use standard
                                     if(preg_match("/^http/", $menu->items[$itemId]->link)) {
                                         $html .= "<li class='relative group'><a class='".$linkClass."' target='_BLANK' href='".$menu->items[$itemId]->link."'>".$menu->items[$itemId]->nama_menu."</a></li>";
                                     }else{
@@ -57,7 +62,7 @@
                                     }
                                 }
                                 if (isset($menu->parents[$itemId])) {
-                                    $linkClass = $parent == '0' ? "block py-2.5 md:py-1 font-semibold text-slate-700 hover:text-emerald-600 transition-all duration-200 uppercase tracking-wide text-xs md:text-sm flex items-center justify-between md:justify-start relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:-bottom-1 after:left-0 after:bg-emerald-600 after:origin-bottom-right after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-hover:after:origin-bottom-left" : "block px-4 py-2 text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 hover:pl-6 transition-all duration-200 text-xs font-medium flex items-center justify-between";
+                                    $linkClass = $parent == '0' ? "block py-2 md:py-1 font-medium text-[14px] text-[#43474E] hover:text-[#002045] font-['Inter'] transition-colors flex items-center" : "block px-4 py-2 text-[#43474E] hover:bg-[#F9F9FF] hover:text-[#002045] transition-colors text-[14px] font-medium font-['Inter'] flex items-center justify-between";
                                     
                                     if(preg_match("/^http/", $menu->items[$itemId]->link)) {
                                         $html .= "<li class='relative group'><a class='".$linkClass."' target='_BLANK' href='".$menu->items[$itemId]->link."'>".$menu->items[$itemId]->nama_menu." <i class='fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-60'></i></a>";
@@ -75,14 +80,21 @@
                 }
                 echo main_menu();
             ?>
+        </div>
+        @endif
 
-            <!-- Quick Action Button -->
-            <div class="pt-2 md:pt-0">
-                <a href="{{ url('/konsultasi') }}" class="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md shadow-emerald-600/20 hover:shadow-lg hover:shadow-emerald-600/30 hover:-translate-y-0.5 transition-all duration-200">
-                    <i class="fa-solid fa-comments text-emerald-200"></i>
-                    <span>Konsultasi Online</span>
+        <!-- Trailing Action -->
+        <div class="hidden md:flex ml-8">
+            @if(Auth::check() || session()->has('username'))
+                <a href="{{ url('/user/profile') }}" class="flex items-center gap-2 bg-[#002045] hover:bg-[#001530] text-white px-6 py-3 rounded-xl transition-colors h-[44px]">
+                    <span class="font-['Inter'] font-medium text-[14px]">Dashboard Warga</span>
+                    <i class="fa-regular fa-user text-sm"></i>
                 </a>
-            </div>
+            @else
+                <a href="{{ url('/user/login') }}" class="flex items-center justify-center bg-[#002045] hover:bg-[#001530] text-white px-6 py-2 rounded-xl transition-colors h-[36px]">
+                    <span class="font-['Inter'] font-medium text-[14px] text-center w-full">Login Warga</span>
+                </a>
+            @endif
         </div>
     </nav>
 </div>

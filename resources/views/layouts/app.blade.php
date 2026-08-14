@@ -29,10 +29,10 @@
     <link rel="apple-touch-icon" href="{{ url('favicon.svg') }}?v=2" />
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{{ url('rss.xml') }}" />
     
-    <!-- Google Fonts: Plus Jakarta Sans -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Vite Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -45,7 +45,7 @@
 
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
     </style>
 
@@ -59,43 +59,24 @@
     </script>
 </head>
  
-<body class="bg-slate-50/70 text-slate-800 font-sans leading-normal tracking-normal flex flex-col min-h-screen selection:bg-emerald-500 selection:text-white">
-
-    <!-- Top Bar -->
-    <div class="bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-950 text-white shadow-sm z-50">
-        @include('partials.header-top')
-    </div>
+<body class="bg-white text-slate-800 font-sans leading-normal tracking-normal flex flex-col min-h-screen selection:bg-[#002045] selection:text-white">
 
     <!-- Main Header -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-emerald-100/60 transition-all duration-300">  
+    <header class="sticky top-0 z-40 bg-[#F9F9FF] transition-all duration-300">  
         @include('partials.header')
     </header> 
 
     <!-- Main Content -->
-    <main class="flex-grow relative">
-        <!-- Ambient background soft glow circles -->
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-emerald-300/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute top-1/3 right-10 w-96 h-96 bg-teal-300/10 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div class="container mx-auto px-4 py-8 relative z-10">
-            @yield('content') 
-        </div>
+    <main class="flex-grow relative bg-white">
+        @yield('content') 
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-100 py-12 border-t border-slate-800">
+    <footer>
         @if (request()->segment(1) != 'user')
             @include('partials.footer')
         @endif
-    </footer> 
-
-    <!-- Copyright -->
-    <div class="bg-slate-950 text-center py-4 text-slate-400 text-sm border-t border-slate-900">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
-            <p>&copy; {{ date('Y') }} <span class="font-bold text-emerald-400">E-Konseling</span>. Layanan Konseling Online Terpercaya.</p>
-            <p class="text-xs text-slate-500">Integritas & Kerahasiaan Terjamin</p>
-        </div>
-    </div>
+    </footer>
 
     <!-- Upload Modal (AlpineJS version) -->
     <div x-data="{ uploadModalOpen: false }" @open-upload-modal.window="uploadModalOpen = true">
