@@ -86,13 +86,26 @@
         <!-- Trailing Action -->
         <div class="hidden md:flex ml-8">
             @if(Auth::check() || session()->has('username'))
-                <a href="{{ url('/user/profile') }}" class="flex items-center gap-2 bg-[#002045] hover:bg-[#001530] text-white px-6 py-3 rounded-xl transition-colors h-[44px]">
-                    <span class="font-['Inter'] font-medium text-[14px]">Dashboard Warga</span>
+                @php
+                    $level = session('level');
+                    if ($level == 'admin') {
+                        $dashboardUrl = url('/admin/dashboard');
+                        $dashboardText = 'Dashboard Admin';
+                    } elseif ($level == 'psikolog') {
+                        $dashboardUrl = url('/psikolog/profile');
+                        $dashboardText = 'Dashboard Konselor';
+                    } else {
+                        $dashboardUrl = url('/user/profile');
+                        $dashboardText = 'Dashboard Warga';
+                    }
+                @endphp
+                <a href="{{ $dashboardUrl }}" class="flex items-center gap-2 bg-[#002045] hover:bg-[#001530] text-white px-6 py-3 rounded-xl transition-colors h-[44px]">
+                    <span class="font-['Inter'] font-medium text-[14px]">{{ $dashboardText }}</span>
                     <i class="fa-regular fa-user text-sm"></i>
                 </a>
             @else
                 <a href="{{ url('/user/login') }}" class="flex items-center justify-center bg-[#002045] hover:bg-[#001530] text-white px-6 py-2 rounded-xl transition-colors h-[36px]">
-                    <span class="font-['Inter'] font-medium text-[14px] text-center w-full">Login Warga</span>
+                    <span class="font-['Inter'] font-medium text-[14px] text-center w-full">Login</span>
                 </a>
             @endif
         </div>

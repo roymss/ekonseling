@@ -30,7 +30,7 @@
                     </p>
                     
                     <div class="flex flex-wrap items-center gap-4 mt-2">
-                        <a href="{{ url('user/konsultasi_tambah') }}" class="bg-[#002045] hover:bg-[#001530] text-white text-[14px] font-medium px-6 py-3 rounded flex items-center gap-2 transition-colors">
+                        <a href="{{ url('user/profile') }}" class="bg-[#002045] hover:bg-[#001530] text-white text-[14px] font-medium px-6 py-3 rounded flex items-center gap-2 transition-colors">
                             <span>Mulai Konseling</span>
                             <i class="fa-solid fa-arrow-right text-xs"></i>
                         </a>
@@ -86,7 +86,7 @@
                 <p class="text-[#43474E] text-[14px] leading-[24px] flex-grow">
                     Bantuan personal untuk mengelola stres, kecemasan, depresi, atau masalah pribadi lainnya dalam lingkungan yang aman.
                 </p>
-                <a href="{{ url('user/konsultasi_tambah') }}" class="text-[#002045] text-[14px] font-semibold flex items-center gap-2 hover:underline mt-2 w-fit">
+                <a href="{{ url('user/profile') }}" class="text-[#002045] text-[14px] font-semibold flex items-center gap-2 hover:underline mt-2 w-fit">
                     <span>Daftar Sekarang</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
@@ -101,7 +101,7 @@
                 <p class="text-[#43474E] text-[14px] leading-[24px] flex-grow">
                     Fasilitasi komunikasi dan penyelesaian konflik untuk menciptakan hubungan keluarga yang lebih harmonis dan sehat.
                 </p>
-                <a href="{{ url('user/konsultasi_tambah') }}" class="text-[#002045] text-[14px] font-semibold flex items-center gap-2 hover:underline mt-2 w-fit">
+                <a href="{{ url('user/profile') }}" class="text-[#002045] text-[14px] font-semibold flex items-center gap-2 hover:underline mt-2 w-fit">
                     <span>Daftar Sekarang</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
@@ -116,7 +116,7 @@
                 <p class="text-[#43474E] text-[14px] leading-[24px] flex-grow">
                     Bimbingan profesional untuk merencanakan jalur karir, mengatasi burnout, dan mengembangkan potensi diri di tempat kerja.
                 </p>
-                <a href="{{ url('user/konsultasi_tambah') }}" class="text-[#002045] text-[14px] font-semibold flex items-center gap-2 hover:underline mt-2 w-fit">
+                <a href="{{ url('user/profile') }}" class="text-[#002045] text-[14px] font-semibold flex items-center gap-2 hover:underline mt-2 w-fit">
                     <span>Daftar Sekarang</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>

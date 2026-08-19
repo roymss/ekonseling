@@ -73,7 +73,7 @@
 
     <!-- Footer -->
     <footer>
-        @if (request()->segment(1) != 'user')
+        @if (!in_array(request()->segment(1), ['user', 'psikolog', 'admin']))
             @include('partials.footer')
         @endif
     </footer>

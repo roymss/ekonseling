@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         if (Auth::check()) {
             if (Auth::user()->level === 'psikolog') {
-                return redirect('psikolog/chat');
+                return redirect('psikolog/profile');
             }
             return redirect()->route('user.profile');
         }
@@ -40,7 +40,7 @@ class UserController extends Controller
                     'id_session' => $user->id_session,
                 ]);
                 if ($user->level === 'psikolog') {
-                    return redirect()->intended('psikolog/chat');
+                    return redirect()->intended('psikolog/profile');
                 }
                 return redirect()->intended('user/profile');
             }
@@ -64,7 +64,7 @@ class UserController extends Controller
                     'id_session' => $user->id_session,
                 ]);
                 if ($user->level === 'psikolog') {
-                    return redirect()->intended('psikolog/chat');
+                    return redirect()->intended('psikolog/profile');
                 }
                 return redirect()->intended('user/profile');
             }
@@ -147,7 +147,12 @@ class UserController extends Controller
             if ($row) Auth::login($row);
         }
         $image = captcha_img();
-        return view('user.profile', compact('title', 'row', 'image'));
+        
+        $clinical_notes = \App\Models\ClinicalNote::where('patient_username', session('username'))
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        return view('user.profile', compact('title', 'row', 'image', 'clinical_notes'));
     }
 
     public function edit_profile(Request $request)
@@ -158,7 +163,7 @@ class UserController extends Controller
             $rules = [
                 'c' => 'required',
                 'cc' => 'required',
-                'd' => 'required|email|unique:users,email,' . $user->id,
+                'd' => 'required|email|unique:users,email,' . $user->username . ',username',
                 'e' => 'required',
                 'secutity_code' => 'required|captcha'
             ];
@@ -333,6 +338,56 @@ class UserController extends Controller
         DB::table('komentar_konsul')->where('id_konsul', $id)->delete();
         
         return redirect('user/konsultasi')->with('message', '<div class="alert alert-success">Konsultasi berhasil dihapus.</div>');
+    }
+
+    public function konsultasi_reschedule(Request $request, $id)
+    {
+        $user = Auth::user();
+        
+        $rules = [
+            'tanggal' => 'required|date',
+            'jam' => 'required'
+        ];
+        
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return redirect()->back()->with('message', '<div class="alert alert-danger">Harap pilih tanggal dan jam yang valid!</div>');
+        }
+        
+        DB::table('konsul')->where('id_konsul', $id)->where('username', $user->username)->update([
+            'tanggal' => $request->input('tanggal'),
+            'jam' => $request->input('jam'),
+        ]);
+        
+        return redirect()->route('user.profile')->with('message', '<div class="alert alert-success">Jadwal konsultasi berhasil diubah.</div>');
+    }
+
+    public function clinical_notes()
+    {
+        $username = session('username');
+        if (!$username && Auth::check()) {
+            $username = Auth::user()->username;
+        }
+
+        $notes = \App\Models\ClinicalNote::where('patient_username', $username)
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        return view('user.clinical_notes', compact('notes'));
+    }
+
+    public function show_clinical_note($id)
+    {
+        $username = session('username');
+        if (!$username && Auth::check()) {
+            $username = Auth::user()->username;
+        }
+
+        $note = \App\Models\ClinicalNote::where('patient_username', $username)
+            ->where('id', $id)
+            ->firstOrFail();
+            
+        return view('user.clinical_notes_show', compact('note'));
     }
 
     public function logout(Request $request)

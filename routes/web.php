@@ -66,6 +66,10 @@ Route::prefix('user')->group(function () {
         Route::post('/chat/send', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('user.chat.send');
         Route::post('/chat/create', [\App\Http\Controllers\ChatController::class, 'createRoom'])->name('user.chat.create');
         Route::get('/konsultasi_delete/{id}', [UserController::class, 'konsultasi_delete'])->name('user.konsultasi_delete');
+        Route::post('/konsultasi_reschedule/{id}', [UserController::class, 'konsultasi_reschedule'])->name('user.konsultasi_reschedule');
+        
+        Route::get('/clinical_notes', [UserController::class, 'clinical_notes'])->name('user.clinical_notes.index');
+        Route::get('/clinical_notes/{id}', [UserController::class, 'show_clinical_note'])->name('user.clinical_notes.show');
         
         Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
     });
@@ -78,6 +82,23 @@ Route::prefix('psikolog')->middleware(['cek_session_psikolog'])->group(function 
     Route::get('/chat', [\App\Http\Controllers\PsikologChatController::class, 'index'])->name('psikolog.chat');
     Route::get('/chat/messages', [\App\Http\Controllers\PsikologChatController::class, 'fetchMessages'])->name('psikolog.chat.messages');
     Route::post('/chat/send', [\App\Http\Controllers\PsikologChatController::class, 'sendMessage'])->name('psikolog.chat.send');
+    Route::get('/chat/unread', [\App\Http\Controllers\PsikologChatController::class, 'checkUnread'])->name('psikolog.chat.unread');
+    
+    Route::get('/profile', [\App\Http\Controllers\PsikologChatController::class, 'profile'])->name('psikolog.profile');
+    Route::match(['get', 'post'], '/edit_profile', [\App\Http\Controllers\PsikologChatController::class, 'edit_profile'])->name('psikolog.edit_profile');
+    Route::match(['get', 'post'], '/foto', [\App\Http\Controllers\PsikologChatController::class, 'foto'])->name('psikolog.foto');
+    Route::post('/konsultasi_reschedule/{id}', [\App\Http\Controllers\PsikologChatController::class, 'konsultasi_reschedule'])->name('psikolog.konsultasi_reschedule');
+    
+    // Clinical Notes
+    Route::resource('clinical_notes', \App\Http\Controllers\ClinicalNoteController::class)->names([
+        'index' => 'psikolog.clinical_notes.index',
+        'create' => 'psikolog.clinical_notes.create',
+        'store' => 'psikolog.clinical_notes.store',
+        'show' => 'psikolog.clinical_notes.show',
+        'edit' => 'psikolog.clinical_notes.edit',
+        'update' => 'psikolog.clinical_notes.update',
+        'destroy' => 'psikolog.clinical_notes.destroy',
+    ]);
 });
 
 // ========================
@@ -90,7 +111,7 @@ Route::prefix('admin')->group(function () {
 
     // Protected Admin Routes
     Route::middleware(['cek_session_admin'])->group(function () {
-        Route::match(['get', 'post'], '/home', [AdministratorController::class, 'home'])->name('admin.home');
+        Route::get('dashboard', [AdministratorController::class, 'dashboard'])->name('admin.dashboard');
         
         // Modul Berita
         Route::get('/listberita', [AdministratorController::class, 'listberita'])->name('admin.listberita');

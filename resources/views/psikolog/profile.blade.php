@@ -15,7 +15,7 @@
             </a>
             
             <a href="#" @click.prevent="tab = 'sesi'" :class="tab === 'sesi' ? 'bg-[#D8E3FA] text-[#002045]' : 'hover:bg-slate-50 text-[#43474E]'" class="w-full rounded p-3 flex items-center justify-between transition-colors">
-                <span class="text-[14px] font-semibold leading-5" :class="tab === 'sesi' ? 'text-[#002045]' : 'text-[#43474E]'">Sesi Saya</span>
+                <span class="text-[14px] font-semibold leading-5" :class="tab === 'sesi' ? 'text-[#002045]' : 'text-[#43474E]'">Pasien Saya</span>
                 <i class="fa-regular fa-calendar" :class="tab === 'sesi' ? 'text-[#002045]' : 'text-[#43474E]'"></i>
             </a>
             
@@ -29,9 +29,9 @@
                 </div>
             </a>
             
-            <a href="#" @click.prevent="tab = 'catatan'" :class="tab === 'catatan' ? 'bg-[#D8E3FA] text-[#002045]' : 'hover:bg-slate-50 text-[#43474E]'" class="w-full rounded p-3 flex items-center justify-between transition-colors">
-                <span class="text-[14px] font-semibold leading-5" :class="tab === 'catatan' ? 'text-[#002045]' : 'text-[#43474E]'">Catatan Klinis</span>
-                <i class="fa-regular fa-clipboard" :class="tab === 'catatan' ? 'text-[#002045]' : 'text-[#43474E]'"></i>
+            <a href="{{ route('psikolog.clinical_notes.index') }}" class="w-full rounded p-3 flex items-center justify-between transition-colors hover:bg-slate-50 text-[#43474E]">
+                <span class="text-[14px] font-semibold leading-5 text-[#43474E]">Catatan Klinis</span>
+                <i class="fa-regular fa-clipboard text-[#43474E]"></i>
             </a>
             
             <div class="mt-2 pt-3 border-t border-[#C4C6CF]">
@@ -39,27 +39,10 @@
                     <span class="text-[14px] font-medium leading-5" :class="tab === 'pengaturan' ? 'text-[#002045] font-semibold' : 'text-[#43474E]'">Pengaturan Privasi</span>
                     <i class="fa-solid fa-gear" :class="tab === 'pengaturan' ? 'text-[#002045]' : 'text-[#43474E]'"></i>
                 </a>
-                <div x-data="{ showLogoutModal: false }" class="mt-2 pt-3 border-t border-[#C4C6CF]">
-                    <button @click="showLogoutModal = true" class="w-full hover:bg-[#FFDAD6] rounded p-3 flex items-center justify-between transition-colors mt-1 text-left">
-                        <span class="text-[#BA1A1A] text-[14px] font-bold leading-5">Logout</span>
-                        <i class="fa-solid fa-arrow-right-from-bracket text-[#BA1A1A]"></i>
-                    </button>
-
-                    <!-- Logout Confirmation Modal -->
-                    <div x-show="showLogoutModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="logout-modal-title" role="dialog" aria-modal="true">
-                        <div class="flex items-center justify-center min-h-screen px-4 py-8">
-                            <div x-show="showLogoutModal" x-transition.opacity class="fixed inset-0 bg-black/50" @click="showLogoutModal = false"></div>
-                            <div x-show="showLogoutModal" x-transition class="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                                <h3 class="text-lg font-semibold text-[#111C2C] mb-4" id="logout-modal-title">Konfirmasi Logout</h3>
-                                <p class="text-[#43474E] mb-6">Apakah Anda yakin ingin keluar?</p>
-                                <div class="flex justify-end space-x-3">
-                                    <button @click="showLogoutModal = false" class="px-4 py-2 bg-gray-200 text-[#43474E] rounded hover:bg-gray-300 transition-colors">Batal</button>
-                                    <a href="{{ url('user/logout') }}" class="px-4 py-2 bg-[#D9534F] text-white rounded hover:bg-[#C9302C] transition-colors">Logout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <a href="{{ url('user/logout') }}" onclick="return confirm('Apakah Anda yakin ingin keluar?')" class="w-full hover:bg-[#FFDAD6] rounded p-3 flex items-center justify-between transition-colors mt-1">
+                    <span class="text-[#BA1A1A] text-[14px] font-bold leading-5">Logout</span>
+                    <i class="fa-solid fa-arrow-right-from-bracket text-[#BA1A1A]"></i>
+                </a>
             </div>
         </aside>
 
@@ -85,13 +68,10 @@
                                 ->count();
                         }
                     @endphp
-                    <h1 class="text-[#111C2C] text-[24px] font-semibold leading-8">Selamat Datang, {{ $nama_depan }}</h1>
+                    <h1 class="text-[#111C2C] text-[24px] font-semibold leading-8">Selamat Datang, {{ $row['nama_lengkap'] ?? 'Konselor' }}</h1>
                     <p class="text-[#43474E] text-[16px] leading-6">Berikut adalah ringkasan aktivitas konseling Anda.</p>
                 </div>
-                <button type="button" @click.prevent="$dispatch('open-new-session')" class="bg-[#002045] hover:bg-[#001530] text-white px-6 py-3 rounded-lg flex items-center gap-2 shadow-sm transition-colors">
-                    <span class="font-medium text-[14px] leading-5">Jadwalkan Sesi Baru</span>
-                    <i class="fa-solid fa-plus text-sm"></i>
-                </button>
+                
             </div>
 
             <!-- Tab 1: Ringkasan -->
@@ -115,7 +95,7 @@
                                 $sesi_mendatang = \Illuminate\Support\Facades\DB::table('konsul')
                                                 ->leftJoin('users', 'konsul.username_psikolog', '=', 'users.username')
                                                 ->select('konsul.*', 'users.nama_lengkap as nama_psikolog')
-                                                ->where('konsul.username', session('username'))
+                                                ->where('konsul.username_psikolog', session('username'))
                                                 ->orderBy('konsul.id_konsul', 'desc')
                                                 ->first();
                             @endphp
@@ -123,7 +103,7 @@
                             @if($sesi_mendatang)
                             <div class="flex items-center justify-between border-b border-[#C4C6CF] pb-3">
                                 <div>
-                                    <h3 class="text-[#111C2C] text-[16px] font-bold">Konseling dengan {{ $sesi_mendatang->nama_psikolog ?? 'Konselor (Menunggu)' }}</h3>
+                                    <h3 class="text-[#111C2C] text-[16px] font-bold">Konseling dengan Pasien: {{ $sesi_mendatang->nama_pasien ?? 'Pasien' }}</h3>
                                     <p class="text-[#43474E] text-[14px]">Topik: {{ $sesi_mendatang->judul }}</p>
                                 </div>
                                 <div class="text-right">
@@ -140,7 +120,7 @@
                                         <div x-show="showRescheduleModal" x-transition.opacity class="fixed inset-0 backdrop-blur-sm transition-opacity" style="background-color: rgba(0, 0, 0, 0.4);" aria-hidden="true" @click="showRescheduleModal = false"></div>
                                         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                                         <div x-show="showRescheduleModal" x-transition class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full z-50 relative">
-                                            <form action="{{ route('user.konsultasi_reschedule', $sesi_mendatang->id_konsul) }}" method="POST">
+                                            <form action="{{ route('psikolog.konsultasi_reschedule', $sesi_mendatang->id_konsul) }}" method="POST">
                                                 @csrf
                                                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-b border-[#C4C6CF]">
                                                     <h3 class="text-lg leading-6 font-bold text-[#002045]" id="modal-title">Jadwal Ulang Konseling</h3>
@@ -171,7 +151,7 @@
                             @else
                             <div class="text-center py-4">
                                 <p class="text-[#43474E] text-[14px]">Belum ada sesi mendatang.</p>
-                                <button type="button" @click.prevent="$dispatch('open-new-session')" class="text-[#002045] font-semibold text-sm hover:underline mt-2 inline-block">Jadwalkan sekarang</button>
+                                
                             </div>
                             @endif
                         </div>
@@ -220,18 +200,20 @@
                 </div>
             </div>
 
-            <!-- Tab 2: Sesi Saya -->
+            <!-- Tab 2: Pasien Saya -->
             <div x-show="tab === 'sesi'" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" class="flex flex-col gap-6">
                 <div class="bg-white border border-[#C4C6CF] rounded-lg p-6">
                     <h2 class="text-[#111C2C] text-[18px] font-bold border-b border-[#C4C6CF] pb-4 mb-4">Daftar Sesi Konseling Saya</h2>
                     
                     @php
-                        $sesi_saya = \Illuminate\Support\Facades\DB::table('konsul')
-                                        ->leftJoin('users', 'konsul.username_psikolog', '=', 'users.username')
-                                        ->select('konsul.*', 'users.nama_lengkap as nama_psikolog')
-                                        ->where('konsul.username', session('username'))
-                                        ->orderBy('konsul.id_konsul', 'desc')
-                                        ->get();
+                        
+$sesi_saya = \Illuminate\Support\Facades\DB::table('konsul')
+    ->leftJoin('users', 'konsul.username', '=', 'users.username')
+    ->select('konsul.*', 'users.nama_lengkap as nama_pasien')
+    ->where('konsul.username_psikolog', session('username'))
+    ->orderBy('konsul.id_konsul', 'desc')
+    ->get();
+
                     @endphp
                     
                     @if($sesi_saya->count() > 0)
@@ -239,7 +221,7 @@
                             @foreach($sesi_saya as $k)
                             <div x-data="{ showModal: false }" class="flex flex-col md:flex-row justify-between items-start md:items-center bg-[#F9F9FF] border border-[#E1E6F3] p-4 rounded-lg hover:border-[#C4C6CF] transition-colors">
                                 <div class="mb-3 md:mb-0">
-                                    <h3 class="font-bold text-[#002045] text-base">Konseling dengan {{ $k->nama_psikolog ?? 'Konselor (Menunggu)' }}</h3>
+                                    <h3 class="font-bold text-[#002045] text-base">Konseling dengan Pasien: {{ $k->nama_pasien ?? $k->username }}</h3>
                                     <p class="text-sm text-[#43474E] mt-1">
                                         <i class="fa-solid fa-tag mr-1"></i> Topik: {{ $k->judul }}
                                     </p>
@@ -297,7 +279,7 @@
                                                 </div>
                                             </div>
                                             <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-[#C4C6CF]">
-                                                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#002045] text-base font-medium text-white hover:bg-[#001530] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002045] sm:ml-3 sm:w-auto sm:text-sm" @click="showModal = false; tab = 'pesan'; initChat({{ $k->id_konsul }}, '{{ addslashes($k->nama_psikolog ?? 'Konselor') }}')">
+                                                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#002045] text-base font-medium text-white hover:bg-[#001530] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002045] sm:ml-3 sm:w-auto sm:text-sm" @click="showModal = false; tab = 'pesan'; initChat({{ $k->id_konsul }}, '{{ addslashes($k->nama_pasien ?? 'Pasien') }}')">
                                                     Mulai Chat Konselor
                                                 </button>
                                                 <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-[#C4C6CF] shadow-sm px-4 py-2 bg-white text-base font-medium text-[#43474E] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002045] sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" @click="showModal = false">
@@ -315,7 +297,7 @@
                             <div class="text-[#C4C6CF] mb-3"><i class="fa-regular fa-calendar-xmark text-4xl"></i></div>
                             <p class="text-[#43474E] text-[16px] font-medium">Anda belum memiliki sesi konseling.</p>
                             <p class="text-[#43474E] text-[14px] mt-1 mb-4">Jadwalkan sesi pertama Anda untuk memulai perjalanan konseling.</p>
-                            <button type="button" @click.prevent="$dispatch('open-new-session')" class="bg-[#002045] hover:bg-[#001530] text-white px-6 py-2 rounded-lg shadow-sm transition-colors text-sm">Jadwalkan Sekarang</button>
+                            
                         </div>
                     @endif
                 </div>
@@ -331,7 +313,7 @@
                     @if(isset($sesi_saya) && $sesi_saya->count() > 0)
                         <div class="space-y-2 overflow-y-auto flex-1">
                             @foreach($sesi_saya as $k)
-                                <div @click="initChat({{ $k->id_konsul }}, '{{ addslashes($k->nama_psikolog ?? 'Konselor') }}')" class="cursor-pointer p-4 border rounded-lg transition-colors flex justify-between items-center" :class="(roomUnreads[{{ $k->id_konsul }}] || 0) > 0 ? 'bg-[#FDFDFD] border-[#002045] shadow-sm' : 'bg-[#F9F9FF] border-[#E1E6F3] hover:border-[#C4C6CF]'">
+                                <div @click="initChat({{ $k->id_konsul }}, '{{ addslashes($k->nama_pasien ?? 'Pasien') }}')" class="cursor-pointer p-4 border rounded-lg transition-colors flex justify-between items-center" :class="(roomUnreads[{{ $k->id_konsul }}] || 0) > 0 ? 'bg-[#FDFDFD] border-[#002045] shadow-sm' : 'bg-[#F9F9FF] border-[#E1E6F3] hover:border-[#C4C6CF]'">
                                     <div class="flex items-center gap-3">
                                         <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm relative transition-colors" :class="(roomUnreads[{{ $k->id_konsul }}] || 0) > 0 ? 'bg-[#002045] text-white' : 'bg-[#E8F0FE] text-[#002045]'">
                                             {{ strtoupper(substr($k->nama_psikolog ?? 'K', 0, 1)) }}
@@ -416,43 +398,7 @@
                 </div>
             </div>
 
-            <!-- Tab 4: Catatan Klinis -->
-            <div x-show="tab === 'catatan'" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" class="flex flex-col gap-6">
-                <div class="bg-white border border-[#C4C6CF] rounded-lg p-6 min-h-[300px]">
-                    <h2 class="text-[#111C2C] text-[18px] font-bold border-b border-[#C4C6CF] pb-4 mb-4">Catatan Klinis Saya</h2>
-                    
-                    @if(isset($clinical_notes) && $clinical_notes->count() > 0)
-                        <div class="space-y-4">
-                            @foreach($clinical_notes as $note)
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-[#F9F9FF] border border-[#E1E6F3] p-4 rounded-lg hover:border-[#C4C6CF] transition-colors">
-                                <div class="mb-3 md:mb-0">
-                                    <h3 class="font-bold text-[#002045] text-base">Sesi dengan {{ $note->counselor_name }}</h3>
-                                    <p class="text-sm text-[#43474E] mt-1">
-                                        <i class="fa-regular fa-calendar mr-1"></i> {{ \Carbon\Carbon::parse($note->date)->format('d M Y') }}
-                                    </p>
-                                    <p class="text-sm text-[#43474E] mt-1 max-w-lg truncate">
-                                        <i class="fa-solid fa-stethoscope mr-1"></i> {{ $note->diagnosis }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col items-end gap-2 w-full md:w-auto">
-                                    <a href="{{ route('user.clinical_notes.show', $note->id) }}" target="_blank" class="text-sm font-medium text-white bg-[#002045] border border-[#002045] px-4 py-1.5 rounded hover:bg-[#001530] transition-colors w-full md:w-auto text-center flex items-center justify-center gap-2">
-                                        <i class="fa-regular fa-file-pdf"></i> Lihat / Print
-                                    </a>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="flex flex-col items-center justify-center text-center mt-8">
-                            <div class="w-16 h-16 bg-[#E8F0FE] text-[#002045] rounded-full flex items-center justify-center mb-4">
-                                <i class="fa-regular fa-clipboard text-2xl"></i>
-                            </div>
-                            <h2 class="text-[#111C2C] text-[18px] font-bold mb-2">Belum Ada Catatan Klinis</h2>
-                            <p class="text-[#43474E] text-[14px] max-w-md">Catatan perkembangan konseling dari psikolog Anda akan direkap di sini setelah Anda menyelesaikan minimal satu sesi.</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
+
 
             <!-- Tab 5: Pengaturan Privasi -->
             <div x-show="tab === 'pengaturan'" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" class="flex flex-col gap-6">
@@ -474,7 +420,13 @@
                             </div>
                         </div>
 
-                        <form action="{{ url('user/edit_profile') }}" enctype='multipart/form-data' method="POST" onsubmit="
+                        @if (session('message'))
+                            <div class="mb-6">
+                                {!! session('message') !!}
+                            </div>
+                        @endif
+
+                        <form action="{{ url('psikolog/edit_profile') }}" enctype='multipart/form-data' method="POST" onsubmit="
                             if (this.a.value == ''){ alert('Anda belum mengisikan Username'); this.a.focus(); return false; }								
                             if (this.c.value == ''){ alert('Anda belum menuliskan Nama Lengkap'); this.c.focus(); return false; }
                             if (this.d.value == ''){ alert('Anda belum menuliskan Email'); this.d.focus(); return false; }
@@ -507,33 +459,33 @@
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Nama Depan <span class="text-[#BA1A1A]">*</span></label>
-                                    <input type="text" name='c' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ $nama[0] ?? '' }}" required>
+                                    <input type="text" name='c' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ old('c', $nama[0] ?? '') }}" required>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Nama Belakang <span class="text-[#BA1A1A]">*</span></label>
-                                    <input type="text" name='cc' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ $nama_belakang }}" required>
+                                    <input type="text" name='cc' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ old('cc', $nama_belakang) }}" required>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Alamat Email <span class="text-[#BA1A1A]">*</span></label>
-                                    <input type="email" name='d' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" placeholder="nama_anda@mail.com" value="{{ $row['email'] ?? '' }}" onkeyup="nospaces(this)" required>
+                                    <input type="email" name='d' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" placeholder="nama_anda@mail.com" value="{{ old('d', $row['email'] ?? '') }}" onkeyup="nospaces(this)" required>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">No Telpon / HP <span class="text-[#BA1A1A]">*</span></label>
-                                    <input type="number" name='e' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" placeholder="08XXXXXXXXXX" value="{{ $row['no_telp'] ?? '' }}" maxlength="15" onkeyup="nospaces(this)" required>
+                                    <input type="number" name='e' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" placeholder="08XXXXXXXXXX" value="{{ old('e', $row['no_telp'] ?? '') }}" maxlength="15" onkeyup="nospaces(this)" required>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Jenis Kelamin <span class="text-[#BA1A1A]">*</span></label>
                                     <div class="flex items-center space-x-6 mt-3">
                                         <label class="inline-flex items-center cursor-pointer">
-                                            <input type="radio" name='kelamin' value='Laki-laki' class="form-radio text-[#002045] focus:ring-[#002045] w-4 h-4" {{ ($row['jenis_kelamin'] ?? '') == 'Laki-laki' ? 'checked' : '' }}>
+                                            <input type="radio" name='kelamin' value='Laki-laki' class="form-radio text-[#002045] focus:ring-[#002045] w-4 h-4" {{ old('kelamin', $row['jenis_kelamin'] ?? '') == 'Laki-laki' ? 'checked' : '' }}>
                                             <span class="ml-2 text-sm text-[#43474E]">Laki-laki</span>
                                         </label>
                                         <label class="inline-flex items-center cursor-pointer">
-                                            <input type="radio" name='kelamin' value='Perempuan' class="form-radio text-[#002045] focus:ring-[#002045] w-4 h-4" {{ ($row['jenis_kelamin'] ?? '') == 'Perempuan' ? 'checked' : '' }}>
+                                            <input type="radio" name='kelamin' value='Perempuan' class="form-radio text-[#002045] focus:ring-[#002045] w-4 h-4" {{ old('kelamin', $row['jenis_kelamin'] ?? '') == 'Perempuan' ? 'checked' : '' }}>
                                             <span class="ml-2 text-sm text-[#43474E]">Perempuan</span>
                                         </label>
                                     </div>
@@ -541,24 +493,24 @@
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Pekerjaan / Perangkat Daerah <span class="text-[#BA1A1A]">*</span></label>
-                                    <input type="text" name='perangkat_daerah' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ $row['perangkat_daerah'] ?? '' }}" required>
+                                    <input type="text" name='perangkat_daerah' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ old('perangkat_daerah', $row['perangkat_daerah'] ?? '') }}" required>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Tempat Lahir <span class="text-[#BA1A1A]">*</span></label>
-                                    <input type="text" name='tempat_lahir' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ $row['tempat_lahir'] ?? '' }}" required>
+                                    <input type="text" name='tempat_lahir' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" value="{{ old('tempat_lahir', $row['tempat_lahir'] ?? '') }}" required>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Tanggal Lahir <span class="text-[#BA1A1A]">*</span></label>
-                                    <input type="date" name='tanggal_lahir' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm datepicker" value="{{ $row['tanggal_lahir'] ?? '' }}" required>
+                                    <input type="date" name='tanggal_lahir' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm datepicker" value="{{ old('tanggal_lahir', $row['tanggal_lahir'] ?? '') }}" required>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Status Pernikahan <span class="text-[#BA1A1A]">*</span></label>
                                     <select name='status' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" required>
                                         @foreach(['Kawin', 'Belum Kawin', 'Duda / Janda'] as $status)
-                                            <option value="{{ $status }}" {{ ($row['status_kawin'] ?? '') == $status ? 'selected' : '' }}>{{ $status }}</option>
+                                            <option value="{{ $status }}" {{ old('status', $row['status_kawin'] ?? '') == $status ? 'selected' : '' }}>{{ $status }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -567,14 +519,14 @@
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Agama <span class="text-[#BA1A1A]">*</span></label>
                                     <select name='agama' class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" required>
                                         @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu', 'Lainnya'] as $agama)
-                                            <option value="{{ $agama }}" {{ ($row['agama'] ?? '') == $agama ? 'selected' : '' }}>{{ $agama }}</option>
+                                            <option value="{{ $agama }}" {{ old('agama', $row['agama'] ?? '') == $agama ? 'selected' : '' }}>{{ $agama }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-semibold text-[#111C2C] mb-2">Alamat Lengkap <span class="text-[#BA1A1A]">*</span></label>
-                                    <textarea name='alamat' rows="3" class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" required>{{ $row['alamat_lengkap'] ?? '' }}</textarea>
+                                    <textarea name='alamat' rows="3" class="w-full px-4 py-3 border border-[#C4C6CF] rounded-xl bg-[#F9F9FF] text-[#111C2C] focus:outline-none focus:ring-1 focus:ring-[#002045] focus:border-[#002045] focus:bg-white transition-colors text-sm" required>{{ old('alamat', $row['alamat_lengkap'] ?? '') }}</textarea>
                                 </div>
 
                                 <div class="md:col-span-2">
@@ -599,64 +551,6 @@
             </div>
 
         </main>
-    </div>
-
-    <!-- New Session Modal -->
-    <div x-data="{ showNewSession: false }" @open-new-session.window="showNewSession = true" x-show="showNewSession" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 backdrop-blur-sm transition-opacity" style="background-color: rgba(0, 0, 0, 0.4);" aria-hidden="true" @click="showNewSession = false"></div>
-
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-            <!-- Modal panel -->
-            <div x-show="showNewSession" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full z-50 relative">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-b border-[#C4C6CF]">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg leading-6 font-bold text-[#002045]" id="modal-title">Jadwalkan Sesi Baru</h3>
-                        <button type="button" @click="showNewSession = false" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
-                    </div>
-                    
-                    <form onsubmit="submitNewSession(event)" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-medium text-[#43474E] mb-1">Kategori</label>
-                            <select name="kategori" class="w-full px-4 py-2 border border-[#C4C6CF] rounded-md focus:ring-[#002045] focus:border-[#002045] text-sm bg-[#F9F9FF]" required>
-                                <option value="">- Pilih Kategori -</option>
-                                @php $kategori = \Illuminate\Support\Facades\DB::table('kategori_konsul')->where('aktif', 'Y')->get(); @endphp
-                                @foreach ($kategori as $row_kat)
-                                    <option value="{{ $row_kat->id_kategori_konsul }}">{{ $row_kat->nama_kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-[#43474E] mb-1">Pilih Psikolog</label>
-                            <select name="psikolog" class="w-full px-4 py-2 border border-[#C4C6CF] rounded-md focus:ring-[#002045] focus:border-[#002045] text-sm bg-[#F9F9FF]" required>
-                                <option value="">- Pilih Psikolog -</option>
-                                @php $psikologs = \Illuminate\Support\Facades\DB::table('users')->where('level', 'psikolog')->get(); @endphp
-                                @foreach ($psikologs as $p)
-                                    <option value="{{ $p->username }}">{{ $p->nama_lengkap }} ({{ $p->perangkat_daerah ?? 'Psikolog' }})</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-[#43474E] mb-1">Judul / Topik</label>
-                            <input type="text" name="judul" class="w-full px-4 py-2 border border-[#C4C6CF] rounded-md focus:ring-[#002045] focus:border-[#002045] text-sm bg-[#F9F9FF]" placeholder="Contoh: Kecemasan berlebih saat ujian" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-[#43474E] mb-1">Keluhan Awal</label>
-                            <textarea name="pesan" rows="4" class="w-full px-4 py-2 border border-[#C4C6CF] rounded-md focus:ring-[#002045] focus:border-[#002045] text-sm bg-[#F9F9FF]" placeholder="Ceritakan keluhan Anda secara singkat..." required></textarea>
-                        </div>
-                        <div class="pt-2 flex justify-end gap-3 border-t border-[#C4C6CF] mt-4 p-4 -mx-4 -mb-4 bg-gray-50">
-                            <button type="button" @click="showNewSession = false" class="px-4 py-2 text-[#43474E] bg-white border border-[#C4C6CF] hover:bg-gray-50 rounded-md text-sm font-medium transition-colors">Batal</button>
-                            <button type="submit" class="px-4 py-2 text-white bg-[#002045] hover:bg-[#001530] rounded-md text-sm font-medium transition-colors">
-                                Jadwalkan Sekarang
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Detail Modal Popup -->
@@ -723,7 +617,7 @@
         btn.disabled = true;
         
         let fd = new FormData(form);
-        fetch('{{ url("user/chat/create") }}', {
+        fetch('{{ url("psikolog/chat/create") }}', {
             method: 'POST',
             body: fd,
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -769,7 +663,7 @@
                 }, 5000);
             },
             checkUnread() {
-                fetch('{{ url("user/chat/unread") }}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                fetch('{{ url("psikolog/chat/unread") }}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .then(r => r.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -797,7 +691,7 @@
             },
             fetchMessages() {
                 if(!this.activeChat) return;
-                fetch('{{ url("user/chat/messages") }}?id_konsul=' + this.activeChat, {
+                fetch('{{ url("psikolog/chat/messages") }}?id_konsul=' + this.activeChat, {
                     headers: {'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json'}
                 })
                 .then(res => res.json())
@@ -833,7 +727,7 @@
                 fd.append('message', text);
                 fd.append('_token', '{{ csrf_token() }}');
                 
-                fetch('{{ url("user/chat/send") }}', { method: 'POST', body: fd, headers: {'X-Requested-With': 'XMLHttpRequest'} })
+                fetch('{{ url("psikolog/chat/send") }}', { method: 'POST', body: fd, headers: {'X-Requested-With': 'XMLHttpRequest'} })
                 .then(() => this.fetchMessages());
             }
         }

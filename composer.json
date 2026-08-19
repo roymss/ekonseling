@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "barryvdh/laravel-dompdf": "^3.1",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
         "mews/captcha": "*"
@@ -83,6 +84,24 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "audit": {
+            "ignore": [
+                "PKSA-cnw1-2ytm-cgr8",
+                "PKSA-gcrk-3vtt-1r14",
+                "PKSA-gh7h-hhy4-byg7",
+                "PKSA-6r8f-nxsb-67bq",
+                "PKSA-cv56-2228-pzr6",
+                "PKSA-mwt3-h9tv-kx78",
+                "PKSA-mckv-s5hg-868k",
+                "PKSA-hp6n-n4kz-21wk",
+                "PKSA-cqd6-fg4n-nxpf",
+                "PKSA-1q6p-sqkj-8mmj",
+                "PKSA-5mzr-szzf-z6cn",
+                "PKSA-scnn-p8mm-jbft",
+                "PKSA-t21r-vtr5-3mdz",
+                "PKSA-mc58-w91n-f5gv"
+            ]
         }
     },
     "minimum-stability": "stable",

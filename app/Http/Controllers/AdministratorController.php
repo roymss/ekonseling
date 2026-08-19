@@ -8,6 +8,10 @@ class AdministratorController extends Controller
 {
     public function index(Request $request)
     {
+        if (session('level') == 'admin') {
+            return redirect('admin/dashboard');
+        }
+
         if ($request->isMethod('post')) {
             $username = $request->input('a');
             $password = hash("sha512", md5($request->input('b')));
@@ -27,7 +31,7 @@ class AdministratorController extends Controller
                 ]);
 
                 if ($row->level == 'admin') {
-                    return redirect('admin/home');
+                    return redirect('admin/dashboard');
                 } else {
                     // Just in case, redirect non-admins back or to their user profile
                     return redirect('user/profile');
@@ -52,10 +56,103 @@ class AdministratorController extends Controller
         return view('admin.home', compact('total_konsultasi', 'pesan_masuk', 'total_berita', 'total_pengguna'));
     }
 
+    /**
+     * Admin dashboard overview
+     */
+    public function dashboard()
+    {
+        // Totals
+        $total_users = \Illuminate\Support\Facades\DB::table('users')->where('level', 'user')->count();
+        $total_psikolog = \Illuminate\Support\Facades\DB::table('users')->where('level', 'psikolog')->count();
+        $active_consultations = \Illuminate\Support\Facades\DB::table('konsul')->where('status', 'aktif')->count();
+
+        // Recent activities (limit 5)
+        $recent_notes = \Illuminate\Support\Facades\DB::table('clinical_notes')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+        $recent_consultations = \Illuminate\Support\Facades\DB::table('konsul')
+            ->orderBy('tanggal', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Chart data: consultations per day for last 7 days
+        $chart = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-{$i} days"));
+            $count = \Illuminate\Support\Facades\DB::table('konsul')
+                ->whereDate('tanggal', $date)
+                ->count();
+            $chart['labels'][] = $date;
+            $chart['data'][] = $count;
+        }
+
+        return view('admin.dashboard', [
+            'total_users' => $total_users,
+            'total_psikolog' => $total_psikolog,
+            'active_consultations' => $active_consultations,
+            'recent_notes' => $recent_notes,
+            'recent_consultations' => $recent_consultations,
+            'chart' => $chart,
+        ]);
+    }
+
     public function logout()
     {
         session()->flush();
         return redirect('admin');
+    }
+
+    // ========================
+    // MANAJEMEN USER (WARGA)
+    // ========================
+    public function manajemenuser()
+    {
+        $title = 'Manajemen User';
+        $users = \Illuminate\Support\Facades\DB::table('users')->where('level', 'user')->get();
+        return view('admin.users.index', compact('title', 'users'));
+    }
+
+    public function tambah_manajemenuser(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $username = $request->input('username');
+            
+            $cek = \Illuminate\Support\Facades\DB::table('users')->where('username', $username)->first();
+            if ($cek) {
+                return redirect()->back()->withInput()->with('message', '<div class="alert alert-danger">Username sudah digunakan!</div>');
+            }
+
+            \Illuminate\Support\Facades\DB::table('users')->insert([
+                'username' => $username,
+                'password' => \Illuminate\Support\Facades\Hash::make($request->input('password')),
+                'nama_lengkap' => $request->input('nama_lengkap'),
+                'email' => $request->input('email'),
+                'no_telp' => $request->input('no_telp'),
+                'jenis_kelamin' => '',
+                'alamat_lengkap' => '',
+                'tempat_lahir' => '',
+                'tanggal_lahir' => date('Y-m-d'),
+                'status_kawin' => '',
+                'agama' => '',
+                'perangkat_daerah' => '',
+                'foto' => '',
+                'level' => 'user',
+                'blokir' => 'N',
+                'id_session' => md5($username . time())
+            ]);
+
+            return redirect('admin/manajemenuser')->with('message', '<div class="alert alert-success">Berhasil menambahkan pengguna baru.</div>');
+        }
+
+        $title = 'Tambah Pengguna Baru';
+        return view('admin.users.tambah', compact('title'));
+    }
+
+    public function delete_manajemenuser($id)
+    {
+        \Illuminate\Support\Facades\DB::table('users')->where('username', $id)->where('level', 'user')->delete();
+        return redirect('admin/manajemenuser')->with('message', '<div class="alert alert-success">Data pengguna berhasil dihapus.</div>');
     }
 
     // ========================
